@@ -10,6 +10,9 @@ def hello_world():
 def submit():
     input_name = request.form.get("name")
     input_age = request.form.get("age")
-    input_nationality = request.form.get("nationality");
-    input_birth = request.form.get("birth");
-    return render_template("hello.html", name=input_name, age=input_age, nationality = input_nationality, birth = input_birth)
+    input_major = request.form.get("major");
+    return render_template("hello.html", name=input_name, age=input_age, major=input_major)
+
+@app.route("/info", methods=["GET"])
+def info():
+    return render_template("info.html")
