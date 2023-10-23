@@ -29,7 +29,9 @@ def process_query(q):
     else:
         return "Unrecognized"
 
-@app.route("/info", methods=["GET"])
-def info():
-    return render_template("info.html")
 
+@app.route('/query', methods=['GET'])
+def query_route():
+    query = request.args.get('q')
+    result = process_query(query)
+    return result
