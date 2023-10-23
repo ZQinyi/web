@@ -19,3 +19,17 @@ def submit():
 @app.route("/info", methods=["GET"])
 def info():
     return render_template("info.html")
+
+
+def process_query(q):
+    if q == "dinosaurs":
+        return "Dinosaurs ruled the Earth 200 million years ago"
+    elif q == "asteroids":
+        return "Unknown"
+    else:
+        return "Unrecognized"
+
+@app.route("/info", methods=["GET"])
+def info():
+    return render_template("info.html")
+
