@@ -27,7 +27,7 @@ def process_query(q):
     elif q == "asteroids":
         return "Unknown"
     else:
-        return "Unrecognized"
+        return "Unrecognized input!!!"
 
 
 @app.route('/query', methods=['GET'])
