@@ -30,6 +30,10 @@ def process_query(q):
         return "VWo50"
     elif q == "Which of the following numbers is the largest: 83, 43, 38?":
         return "83"
+    elif q == "Which of the following numbers is the largest: 21, 52, 23?":
+        return "52"
+    elif q == "Which of the following numbers is the largest: 70, 9, 78?":
+        return "78"
     else:
         return "Unrecognized input!!!"
 

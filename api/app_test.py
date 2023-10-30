@@ -12,3 +12,18 @@ def test_does_not_know_about_asteroids():
 
 def test_get_player_name():
     assert process_query("What is your name?") == "VWo50"
+
+
+def maximum():
+    assert process_query("Which of the following numbers is the \
+    largest: 83, 43, 38?") == "83"
+
+
+def maximum1():
+    assert process_query("Which of the following numbers \
+    is the largest: 21, 52, 23?") == "52"
+
+
+def maximum2():
+    assert process_query("Which of the following numbers \
+    is the largest: 70, 9, 78?") == "78"
