@@ -20,3 +20,7 @@ def test_plus():
 
 def test_mul():
     assert process_query("What is 20 multiplied by 21?") == "420"
+
+
+def test_minus():
+    assert process_query("What is 85 minus 91?") == "-6"
