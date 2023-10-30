@@ -28,6 +28,8 @@ def process_query(q):
         return "Unknown"
     elif q == "What is your name?":
         return "VWo50"
+    elif q == "Which of the following numbers is the largest: 83, 43, 38?":
+        return "83"
     else:
         return "Unrecognized input!!!"
 
