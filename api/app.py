@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import re
 app = Flask(__name__)
 
 
@@ -22,18 +23,16 @@ def info():
 
 
 def process_query(q):
+    add_match = re.search(r"what is (\d+) plus (\d+)?", q, re.I)
     if q == "dinosaurs":
         return "Dinosaurs ruled the Earth 200 million years ago"
     elif q == "asteroids":
         return "Unknown"
     elif q == "What is your name?":
         return "VWo50"
-    elif q == "Which of the following numbers is the largest: 83, 43, 38?":
-        return "83"
-    elif q == "Which of the following numbers is the largest: 21, 52, 23?":
-        return "52"
-    elif q == "Which of the following numbers is the largest: 70, 9, 78?":
-        return "78"
+    elif add_match:
+        num1, num2 = map(int, add_match.groups())
+        return str(num1 + num2)
     else:
         return "Unrecognized input!!!"
 
