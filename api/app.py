@@ -28,8 +28,11 @@ def process_query(q):
         return "Unknown"
     elif q == "What is your name?":
         return "VWo50"
-    elif q == "Which of the following numbers is the largest: 83, 43, 38?":
-        return "83"
+    elif q[47] == "Which of the following numbers is the largest: ":
+        str_ls=q[48:len (q)-1]
+        split_ls=q.split(", ")
+        int_ls=[int(i) for i in split_ls]
+        return max(int_ls)
     elif q == "Which of the following numbers is the largest: 21, 52, 23?":
         return "52"
     elif q == "Which of the following numbers is the largest: 70, 9, 78?":
