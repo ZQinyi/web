@@ -2,8 +2,7 @@ from app import process_query
 
 
 def test_knows_about_dinosaurs():
-    str1 = "Dinosaurs ruled the Earth 200 million years ago"
-    assert process_query("dinosaurs") == str1
+    assert process_query("dinosaurs") == "Dinosaurs ruled the Earth 200 million years ago"
 
 
 def test_does_not_know_about_asteroids():
@@ -24,3 +23,7 @@ def test_mul():
 
 def test_minus():
     assert process_query("What is 85 minus 91?") == "-6"
+
+
+def test_square_cube():
+    assert process_query("Which of the following numbers is both a square and a cube: 64, 1, 729?") == "64, 1, 729"

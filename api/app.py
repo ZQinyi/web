@@ -23,9 +23,10 @@ def info():
 
 
 def process_query(q):
-    add_match = re.search(r"what is (\d+) plus (\d+)?", q, re.I)
+    add_match = re.search(r"What is (\d+) plus (\d+)?", q, re.I)
     add_mul = re.search(r"What is (\d+) multiplied by (\d+)?", q, re.I)
     add_minus = re.search(r"What is (\d+) minus (\d+)?", q, re.I)
+    square_and_cube = re.search(r"Which of the following numbers is both a square and a cube: ([\d, ]+)", q, re.I)
     if q == "dinosaurs":
         return "Dinosaurs ruled the Earth 200 million years ago"
     elif q == "asteroids":
@@ -41,6 +42,11 @@ def process_query(q):
     elif add_minus:
         num1, num2 = map(int, add_minus.groups())
         return str(num1 - num2)
+    elif square_and_cube:
+        numbers_str = square_and_cube.groups()[0]
+        numbers = [int(x) for x in numbers_str.split(", ")]
+        result_numbers = [num for num in numbers if is_square_and_cube(num)]
+        return ', '.join(map(str, result_numbers))
     else:
         return "Unrecognized input!!!"
 
@@ -50,3 +56,8 @@ def query_route():
     query = request.args.get('q')
     result = process_query(query)
     return result
+
+
+def is_square_and_cube(n):
+    root = round(n**(1/6))
+    return root**6 == n
