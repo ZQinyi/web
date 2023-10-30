@@ -26,7 +26,8 @@ def process_query(q):
     add_match = re.search(r"What is (\d+) plus (\d+)?", q, re.I)
     add_mul = re.search(r"What is (\d+) multiplied by (\d+)?", q, re.I)
     add_minus = re.search(r"What is (\d+) minus (\d+)?", q, re.I)
-    square_and_cube = re.search(r"Which of the following numbers is both a square and a cube: ([\d, ]+)", q, re.I)
+    square_and_cube = re.search(r"Which of the following numbers is both a square and a cube: ([\d, ]+)?", q, re.I)
+    are_primes = re.search(r"Which of the following numbers are primes: ([\d, ]+)?", q, re.I)
     if q == "dinosaurs":
         return "Dinosaurs ruled the Earth 200 million years ago"
     elif q == "asteroids":
@@ -47,6 +48,11 @@ def process_query(q):
         numbers = [int(x) for x in numbers_str.split(", ")]
         result_numbers = [num for num in numbers if is_square_and_cube(num)]
         return ', '.join(map(str, result_numbers))
+    elif are_primes:
+        numbers_str = are_primes.groups()[0]
+        numbers = [int(x) for x in numbers_str.split(", ")]
+        primes = [str(num) for num in numbers if is_prime(num)]
+        return ', '.join(primes)
     else:
         return "Unrecognized input!!!"
 
@@ -61,3 +67,12 @@ def query_route():
 def is_square_and_cube(n):
     root = round(n**(1/6))
     return root**6 == n
+
+
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n**0.5)+1):
+        if n % i == 0:
+            return False
+    return True

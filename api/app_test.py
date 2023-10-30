@@ -27,3 +27,7 @@ def test_minus():
 
 def test_square_cube():
     assert process_query("Which of the following numbers is both a square and a cube: 64, 1, 729?") == "64, 1, 729"
+
+
+def test_are_primes():
+    assert process_query("Which of the following numbers are primes: 88, 36, 11, 82, 7?") == "11, 7"
