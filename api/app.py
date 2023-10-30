@@ -26,6 +26,8 @@ def process_query(q):
         return "Dinosaurs ruled the Earth 200 million years ago"
     elif q == "asteroids":
         return "Unknown"
+    elif q == "What is your name?":
+        return "VWo50"
     else:
         return "Unrecognized input!!!"
 
