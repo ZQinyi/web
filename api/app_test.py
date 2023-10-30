@@ -16,3 +16,7 @@ def test_get_player_name():
 
 def test_plus():
     assert process_query("What is 50 plus 25?") == "75"
+
+
+def test_mul():
+    assert process_query("What is 20 multiplied by 21?") == "420"

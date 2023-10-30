@@ -24,6 +24,7 @@ def info():
 
 def process_query(q):
     add_match = re.search(r"what is (\d+) plus (\d+)?", q, re.I)
+    add_mul = re.search(r"What is (\d+) multiplied by (\d+)?", q, re.I)
     if q == "dinosaurs":
         return "Dinosaurs ruled the Earth 200 million years ago"
     elif q == "asteroids":
@@ -33,6 +34,9 @@ def process_query(q):
     elif add_match:
         num1, num2 = map(int, add_match.groups())
         return str(num1 + num2)
+    elif add_mul:
+        num1, num2 = map(int, add_mul.groups())
+        return str(num1 * num2)
     else:
         return "Unrecognized input!!!"
 
