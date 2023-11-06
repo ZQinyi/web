@@ -19,7 +19,7 @@ def submit_info():
                            major=input_major)
 
 
-@app.route('/submit_github', methods=['POST'])
+@app.route('/hub/submit_github', methods=['POST'])
 def submit_github():
     username = request.form.get('GitHub_username')
     repos_url = f"https://api.github.com/users/{username}/repos"
