@@ -55,7 +55,7 @@ def submit_github():
     else:
         return f"Failed to fetch repositories for user {username}, status code: {repos_response.status_code}"
 
-    return render_template('user_repos.html', username=username, repos=repos_info)
+    return render_template('user.html', username=username, repos=repos_info)
 
 
 @app.route("/info", methods=["GET"])
