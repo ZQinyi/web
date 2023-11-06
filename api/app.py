@@ -19,6 +19,11 @@ def submit_info():
                            major=input_major)
 
 
+@app.route("/hub")
+def get_hub():
+    return render_template("hub.html")
+
+
 @app.route('/hub/submit_github', methods=['POST'])
 def submit_github():
     username = request.form.get('GitHub_username')
