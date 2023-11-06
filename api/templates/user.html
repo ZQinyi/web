@@ -3,10 +3,31 @@
 <head>
     <!-- Head content here -->
     <title>{{ username }}'s Repositories</title>
+    <style>
+        /* Simple styles for the contribution graph */
+        .contribution-day {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 2px;
+            background-color: #e0e0e0;
+        }
+        .contribution-count-1 { background-color: #c6e48b; }
+        .contribution-count-2 { background-color: #7bc96f; }
+        .contribution-count-3 { background-color: #239a3b; }
+        .contribution-count-4 { background-color: #196127; }
+    </style>
 </head>
 <body>
     <h1>Hello! {{ username }}</h1>
     <h1>{{ username }}'s GitHub Repositories</h1>
+    <div>
+        <h2>Contribution Graph</h2>
+        {% for date, count in contributions.items() %}
+            <div class="contribution-day contribution-count-{{ count if count <= 4 else '4' }}"
+                title="Date: {{ date }}, Contributions: {{ count }}"></div>
+        {% endfor %}
+    </div>
     <table border="1">
         <thead>
             <tr>
@@ -36,3 +57,4 @@
     </table>
 </body>
 </html>
+

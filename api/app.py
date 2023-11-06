@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from datetime import datetime, timedelta
 import re
 import requests
 app = Flask(__name__)
@@ -23,39 +24,50 @@ def submit_github():
     username = request.form.get('GitHub_username')
     repos_url = f"https://api.github.com/users/{username}/repos"
     repos_response = requests.get(repos_url)
+    contribution_graph = {}  # Dictionary to hold commit counts per day
     repos_info = []
 
     if repos_response.status_code == 200:
         repos = repos_response.json()
         for repo in repos:
-            # Get the commits URL and remove the placeholder for SHA at the end.
-            commits_url = repo['commits_url'].split('{')[0]
+            # Get the default branch
+            default_branch = repo['default_branch']
+            # Get commits from the last year for the default branch
+            year_ago = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
+            commits_url = f"{repo['url']}/commits?since={year_ago}&sha={default_branch}"
             commits_response = requests.get(commits_url)
-
             if commits_response.status_code == 200:
                 commits = commits_response.json()
-                if commits:  # Check if there is at least one commit
-                    latest_commit = commits[0]  # Assume the first one is the latest
-                    commit_data = {
-                        'commit_hash': latest_commit['sha'],
-                        'commit_author': latest_commit['commit']['author']['name'],
-                        'commit_date': latest_commit['commit']['author']['date'],
-                        'commit_message': latest_commit['commit']['message']
-                    }
-                else:
-                    commit_data = {}
+                for commit in commits:
+                    commit_date = commit['commit']['author']['date'][:10]  # Get just the date part
+                    contribution_graph[commit_date] = contribution_graph.get(commit_date, 0) + 1
+                    if commit == commits[0]:
+                        commit_data = {
+                            'commit_hash': commit['sha'],
+                            'commit_author': commit['commit']['author']['name'],
+                            'commit_date': commit_date,
+                            'commit_message': commit['commit']['message']
+                        }
+                        repos_info.append({
+                            'name': repo['name'],
+                            'updated_at': repo['updated_at'],
+                            'latest_commit': commit_data
+                        })
             else:
-                commit_data = {}
+                repos_info.append({
+                    'name': repo['name'],
+                    'updated_at': repo['updated_at'],
+                    'latest_commit': {}
+                })
 
-            repos_info.append({
-                'name': repo['name'],
-                'updated_at': repo['updated_at'],
-                'latest_commit': commit_data
-            })
+        # Sort the contribution graph by date
+        sorted_contributions = dict(sorted(contribution_graph.items()))
+
     else:
         return f"Failed to fetch repositories for user {username}, status code: {repos_response.status_code}"
 
-    return render_template('user.html', username=username, repos=repos_info)
+    # Render template with repository and contribution graph information
+    return render_template('user.html', username=username, repos=repos_info, contributions=sorted_contributions)
 
 
 @app.route("/info", methods=["GET"])
