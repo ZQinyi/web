@@ -8,13 +8,19 @@ def hello_world():
     return render_template("index.html")
 
 
-@app.route("/submit", methods=["POST"])
-def submit():
+@app.route("/submit_info", methods=["POST"])
+def submit_info():
     input_name = request.form.get("name")
     input_age = request.form.get("age")
     input_major = request.form.get("major")
     return render_template("hello.html", name=input_name, age=input_age,
                            major=input_major)
+
+
+@app.route("/submit_github", methods=["POST"])
+def submit_github():
+    input_name = request.form.get("GitHub_username")
+    return render_template("user.html", GitHub_username=input_name)
 
 
 @app.route("/info", methods=["GET"])
