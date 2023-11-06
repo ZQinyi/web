@@ -34,6 +34,9 @@
                 <th>Repository</th>
                 <th>Last Updated</th>
                 <th>Latest Commit Details</th>
+                <th>Stars</th>
+                <th>Forks</th>
+                <th>Open Issues</th>				
             </tr>
         </thead>
         <tbody>
@@ -51,6 +54,9 @@
                         No commits found.
                     {% endif %}
                 </td>
+				<td>{{ repo.stargazers_count }}</td>
+				<td>{{ repo.forks_count }}</td>
+				<td>{{ repo.open_issues_count }}</td>				
             </tr>
             {% endfor %}
         </tbody>
