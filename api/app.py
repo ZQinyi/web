@@ -20,21 +20,21 @@ def submit_info():
 
 @app.route("/submit_github", methods=["POST"])
 def submit_github():
-    input_name = request.form.get("GitHub_username")
-    # Make sure to use requests.get here
-    response = requests.get(f"https://api.github.com/users/{input_name}/repos")
-    repos = []
+    username = request.form.get('GitHub_username')
+    url = f"https://api.github.com/users/{username}/repos"
+    response = requests.get(url)
+    repos_data = []
 
     if response.status_code == 200:
-        repos = response.json()  # data returned is a list of ‘repository’ entities
-        # The following print will only display in the server's console (for debug purposes)
-        for repo in repos:
-            print(repo["full_name"])
+        repos = response.json()
+        repos_data = [
+            {'name': repo['name'], 'updated_at': repo['updated_at']}
+            for repo in repos
+        ]
     else:
-        print(f"Error fetching repositories: {response.status_code}")
+        print(f"Failed to fetch repositories for user {username}, status code: {response.status_code}")
 
-    # Pass both the username and the repos to the template
-    return render_template("user.html", GitHub_username=input_name, repos=repos)
+    return render_template('user.html', username=username, repos=repos_data)
 
 
 @app.route("/info", methods=["GET"])

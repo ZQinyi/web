@@ -1,4 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ username }}'s Repositories</title>
+</head>
 <body>
-    <h1> </h1>
-    <p>Hello {{ GitHub_username }}</p>
-  </body>
+    <h1>{{ username }}'s GitHub Repositories</h1>
+    {% if repos %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Repository Name</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for repo in repos %}
+                <tr>
+                    <td>{{ repo.name }}</td>
+                    <td>{{ repo.updated_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No repositories available or failed to fetch data.</p>
+    {% endif %}
+</body>
+</html>
