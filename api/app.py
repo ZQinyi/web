@@ -20,6 +20,11 @@ def submit_info():
 @app.route("/submit_github", methods=["POST"])
 def submit_github():
     input_name = request.form.get("GitHub_username")
+    response = request.get(f"https://api.github.com/users/{input_name}/repos")
+    if response.status_code == 200:
+        repos = response.json()  # data returned is a list of ‘repository’ entities
+    for repo in repos:
+        print(repo["full_name"])
     return render_template("user.html", GitHub_username=input_name)
 
 
