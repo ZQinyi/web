@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import re
+import requests
 app = Flask(__name__)
 
 
@@ -20,12 +21,20 @@ def submit_info():
 @app.route("/submit_github", methods=["POST"])
 def submit_github():
     input_name = request.form.get("GitHub_username")
-    response = request.get(f"https://api.github.com/users/{input_name}/repos")
+    # Make sure to use requests.get here
+    response = requests.get(f"https://api.github.com/users/{input_name}/repos")
+    repos = []
+
     if response.status_code == 200:
         repos = response.json()  # data returned is a list of ‘repository’ entities
-    for repo in repos:
-        print(repo["full_name"])
-    return render_template("user.html", GitHub_username=input_name)
+        # The following print will only display in the server's console (for debug purposes)
+        for repo in repos:
+            print(repo["full_name"])
+    else:
+        print(f"Error fetching repositories: {response.status_code}")
+
+    # Pass both the username and the repos to the template
+    return render_template("user.html", GitHub_username=input_name, repos=repos)
 
 
 @app.route("/info", methods=["GET"])
