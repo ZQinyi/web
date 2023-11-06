@@ -18,23 +18,44 @@ def submit_info():
                            major=input_major)
 
 
-@app.route("/submit_github", methods=["POST"])
+@app.route('/submit_github', methods=['POST'])
 def submit_github():
     username = request.form.get('GitHub_username')
-    url = f"https://api.github.com/users/{username}/repos"
-    response = requests.get(url)
-    repos_data = []
+    repos_url = f"https://api.github.com/users/{username}/repos"
+    repos_response = requests.get(repos_url)
+    repos_info = []
 
-    if response.status_code == 200:
-        repos = response.json()
-        repos_data = [
-            {'name': repo['name'], 'updated_at': repo['updated_at']}
-            for repo in repos
-        ]
+    if repos_response.status_code == 200:
+        repos = repos_response.json()
+        for repo in repos:
+            # Get the commits URL and remove the placeholder for SHA at the end.
+            commits_url = repo['commits_url'].split('{')[0]
+            commits_response = requests.get(commits_url)
+
+            if commits_response.status_code == 200:
+                commits = commits_response.json()
+                if commits:  # Check if there is at least one commit
+                    latest_commit = commits[0]  # Assume the first one is the latest
+                    commit_data = {
+                        'commit_hash': latest_commit['sha'],
+                        'commit_author': latest_commit['commit']['author']['name'],
+                        'commit_date': latest_commit['commit']['author']['date'],
+                        'commit_message': latest_commit['commit']['message']
+                    }
+                else:
+                    commit_data = {}
+            else:
+                commit_data = {}
+
+            repos_info.append({
+                'name': repo['name'],
+                'updated_at': repo['updated_at'],
+                'latest_commit': commit_data
+            })
     else:
-        print(f"Failed to fetch repositories for user {username}, status code: {response.status_code}")
+        return f"Failed to fetch repositories for user {username}, status code: {repos_response.status_code}"
 
-    return render_template('user.html', username=username, repos=repos_data)
+    return render_template('user_repos.html', username=username, repos=repos_info)
 
 
 @app.route("/info", methods=["GET"])

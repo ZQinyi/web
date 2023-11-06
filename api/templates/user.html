@@ -1,31 +1,37 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Head content here -->
     <title>{{ username }}'s Repositories</title>
 </head>
 <body>
     <h1>{{ username }}'s GitHub Repositories</h1>
-    {% if repos %}
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Repository Name</th>
-                    <th>Last Updated</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for repo in repos %}
-                <tr>
-                    <td>{{ repo.name }}</td>
-                    <td>{{ repo.updated_at }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No repositories available or failed to fetch data.</p>
-    {% endif %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Repository</th>
+                <th>Last Updated</th>
+                <th>Latest Commit Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for repo in repos %}
+            <tr>
+                <td>{{ repo.name }}</td>
+                <td>{{ repo.updated_at }}</td>
+                <td>
+                    {% if repo.latest_commit %}
+                        Hash: {{ repo.latest_commit.commit_hash }}<br>
+                        Author: {{ repo.latest_commit.commit_author }}<br>
+                        Date: {{ repo.latest_commit.commit_date }}<br>
+                        Message: {{ repo.latest_commit.commit_message }}
+                    {% else %}
+                        No commits found.
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
